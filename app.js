@@ -4,6 +4,16 @@ const app = express();
 
 app.use(express.json()); //middleware - for parsing application/json
 
+app.use((req, res, next) => {
+	console.log("hello from middleware");
+	next();
+});
+
+app.use((req, res, next) => {
+	req.requestTime = new Date().toISOString();
+	next();
+});
+
 // // the anon function in the route is called the route handler
 // app.get("/", (req, res) => {
 // 	res.status(200).json({
@@ -20,6 +30,7 @@ const tours = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/tours-simpl
 const getAllTours = (req, res) => {
 	res.status(200).json({
 		status: "success",
+		requestedAt: req.requestTime,
 		results: tours.length,
 		data: {
 			tours
