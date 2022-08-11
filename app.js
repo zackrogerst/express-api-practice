@@ -1,8 +1,13 @@
 const fs = require("fs");
 const express = require("express");
+const morgan = require("morgan");
+
 const app = express();
 
-app.use(express.json()); //middleware - for parsing application/json
+/////////////////////////////////////// middleware
+
+app.use(morgan("dev")); // logging node package
+app.use(express.json()); // middleware - for parsing application/json
 
 app.use((req, res, next) => {
 	console.log("hello from middleware");
@@ -13,6 +18,8 @@ app.use((req, res, next) => {
 	req.requestTime = new Date().toISOString();
 	next();
 });
+
+/////////////////////////////////////// route handlers
 
 // // the anon function in the route is called the route handler
 // app.get("/", (req, res) => {
@@ -105,6 +112,8 @@ const deleteTour = (req, res) => {
 	}
 };
 
+/////////////////////////////////////// routes
+
 // app.get("/api/v1/tours", getAllTours);
 // app.get("/api/v1/tours/:id", getTour);
 // app.post("/api/v1/tours", createTour);
@@ -113,6 +122,11 @@ const deleteTour = (req, res) => {
 
 app.route("/api/v1/tours").get(getAllTours).post(createTour);
 app.route("/api/v1/tours/:id").get(getTour).patch(updateTour).delete(deleteTour);
+
+// app.route("/api/v1/users").get(getAllUsers).post(createUser);
+// app.route("/api/v1/users/:id").get(getUser).patch(updateUser).delete(deleteUser);
+
+/////////////////////////////////////// start server
 
 const port = 3000;
 app.listen(port, () => {
