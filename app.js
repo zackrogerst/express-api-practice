@@ -8,7 +8,11 @@ const userRouter = require("./routes/userRoutes");
 
 /////////////////////////////////////// middleware
 
-app.use(morgan("dev")); // logging node package
+if (process.env.NODE_ENV === "development") {
+	console.log("NODE_ENV:", process.env.NODE_ENV);
+	app.use(morgan("dev")); // logging node package
+}
+
 app.use(express.json()); // middleware - for parsing application/json
 app.use(express.static(`${__dirname}/public`));
 
