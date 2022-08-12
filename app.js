@@ -10,6 +10,7 @@ const userRouter = require("./routes/userRoutes");
 
 app.use(morgan("dev")); // logging node package
 app.use(express.json()); // middleware - for parsing application/json
+app.use(express.static(`${__dirname}/public`));
 
 app.use((req, res, next) => {
 	console.log("hello from middleware");
