@@ -5,7 +5,7 @@ const tours = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/tours-si
 
 module.exports = {
 	checkId: (req, res, next, val) => {
-		console.log("param value", val)
+		console.log("param value", val);
 		if (val * 1 > tours.length) {
 			return res.status(404).json({
 				status: "fail",
@@ -14,6 +14,16 @@ module.exports = {
 		} else {
 			next();
 		}
+	},
+
+	checkBody: (req, res, next) => {
+		if (!req.body.name || !req.body.price) {
+			return res.status(404).json({
+				status: "fail",
+				message: "bad request, requires name and price"
+			});
+		}
+		next();
 	},
 
 	getAllTours: (req, res) => {
